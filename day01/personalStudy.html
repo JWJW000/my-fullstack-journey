@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>我的学习进度</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <main class="card">
+        <h1>我的学习进度</h1>
+        <p class="subtitle">记录每天的学习状态</p>
+        <section class="card">
+            <h2>总体进度</h2>
+            <div class="progress-bar">
+                <div id="totalProgress" class="progress"></div>
+            </div>
+            <p id="progressText"></p>
+        </section>
+
+        <section class="card">
+            <h2>学习任务</h2>
+            <ul id="taskList"></ul>
+
+        </section>
+
+        <section class="card">
+            <h2>今日目标</h2>
+            <input id="goalInput" type="text" placeholder="输入今日学习目标..."/>
+            <button onclick="addGoal()">添加目标</button>
+            <ul id="goalList"></ul>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
