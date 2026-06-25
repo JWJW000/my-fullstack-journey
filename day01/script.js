@@ -1,10 +1,22 @@
-const task = [
+const tasks = [
     {name: "HTML 基础", done: true},
     {name: "CSS 布局", done:true},
     {name: "JavaScript DoM 操作", done: false},
     {name: "GitHub Pages 部署", done: false}
 ];
 
+const chapters = [
+  ["第1章",["",""]],
+   ["第2章",["",""]],
+    ["第3章",["",""]],
+     ["第4章",["",""]],
+      ["第5章",["",""]],
+       ["第6章",["",""]],
+        ["第7章",["",""]],
+         ["第8章",["",""]],
+          ["第9章",["",""]],
+           ["第10章",["",""]],
+]
 
  const taskList = document.getElementById("taskList");
  const totalProgress = document.getElementById("totalProgress");
@@ -56,7 +68,7 @@ const task = [
 
     li.textContent = value;
 
-    goalList.appendChile(li);
+    goalList.appendChild(li);
 
     input.value = "";
   }
