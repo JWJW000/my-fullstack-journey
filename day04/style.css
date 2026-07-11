@@ -1,0 +1,113 @@
+/* ========== 导入 Google Fonts 字体 ========== */
+/* Roboto 字体：用于页面主体文字，包含 400（常规）和 700（粗体）两种字重 */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+/* Poppins 字体：用于按钮文字，风格更圆润现代 */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+/* ========== 全局盒模型设置 ========== */
+/* 将所有元素的 box-sizing 设为 border-box，使 padding 和 border 包含在宽高内，
+   避免因 padding/border 导致元素尺寸超出预期 */
+* {
+  box-sizing: border-box;
+}
+
+/* ========== 页面主体样式 ========== */
+body {
+  background-color: #fafafa;          /* 浅灰色背景 */
+  font-family: 'Roboto', sans-serif;  /* 主字体为 Roboto，备选无衬线字体 */
+  display: flex;                      /* 使用 Flexbox 布局 */
+  flex-direction: column;             /* 子元素纵向排列（按钮在上，盒子在下） */
+  align-items: center;                /* 水平居中 */
+  justify-content: center;            /* 垂直居中 */
+  height: 100vh;                      /* 高度占满整个视口 */
+  overflow: hidden;                   /* 隐藏溢出内容，防止出现滚动条 */
+}
+
+/* ========== "Magic" 按钮样式 ========== */
+.magic {
+  background-color: #f9ca24;          /* 明黄色背景 */
+  color: #fff;                        /* 白色文字 */
+  font-family: 'Poppins', sans-serif; /* 使用 Poppins 字体 */
+  border: 0;                          /* 去除默认边框 */
+  border-radius: 3px;                 /* 轻微圆角 */
+  font-size: 16px;                    /* 字号 16px */
+  padding: 12px 20px;                 /* 内边距：上下12px，左右20px */
+  cursor: pointer;                    /* 鼠标悬停时显示手型指针 */
+  position: fixed;                    /* 固定定位，不随页面滚动 */
+  top: 20px;                          /* 距离顶部 20px */
+  letter-spacing: 1px;                /* 字间距 1px，使文字更舒展 */
+  box-shadow: 0 3px rgba(249, 202, 36, 0.5); /* 底部半透明黄色阴影，营造立体感 */
+  z-index: 100;                       /* 层级设为 100，确保按钮始终在最上层 */
+}
+
+/* 按钮获得焦点时去掉默认的蓝色轮廓线 */
+.magic:focus {
+  outline: none;
+}
+
+/* 按钮被按下时的效果：去掉阴影 + 向下偏移2px，模拟物理按压效果 */
+.magic:active {
+  box-shadow: none;                   /* 移除阴影 */
+  transform: translateY(2px);         /* 向下移动 2px，模拟按钮被按下去 */
+}
+
+/* ========== 盒子容器样式 ========== */
+.boxes {
+  display: flex;                      /* Flexbox 布局 */
+  flex-wrap: wrap;                    /* 允许子元素换行排列（形成 4×4 网格） */
+  justify-content: space-around;      /* 子元素之间均匀分布 */
+  height: 500px;                      /* 容器高度 500px */
+  width: 500px;                       /* 容器宽度 500px */
+  position: relative;                 /* 相对定位，为子元素的绝对定位提供参考 */
+  transition: 0.4s ease;              /* 尺寸变化时的过渡动画，0.4秒缓动 */
+}
+
+/* 容器展开状态：添加 .big 类时容器变大，盒子之间产生间距 */
+.boxes.big {
+  width: 600px;                       /* 宽度扩大到 600px */
+  height: 600px;                      /* 高度扩大到 600px */
+}
+
+/* 展开状态下每个盒子旋转 360 度（配合 transition 产生旋转动画效果） */
+.boxes.big .box {
+  transform: rotateZ(360deg);         /* 绕 Z 轴旋转一整圈 */
+}
+
+/* ========== 单个盒子样式 ========== */
+.box {
+  /* 所有盒子共用同一张 GIF 背景图，每个盒子通过 background-position
+     显示图片的不同区域，拼合起来形成完整画面 */
+  background-image: url('https://media.giphy.com/media/EZqwsBSPlvSda/giphy.gif');
+  background-repeat: no-repeat;       /* 背景图不重复 */
+  background-size: 500px 500px;       /* 背景图尺寸固定为 500×500px（与容器等大） */
+  position: relative;                 /* 相对定位，为伪元素提供定位参考 */
+  height: 125px;                      /* 高度 125px（500 ÷ 4 = 125，4×4 网格） */
+  width: 125px;                       /* 宽度 125px */
+  transition: 0.4s ease;              /* 旋转等变换的过渡动画 */
+}
+
+/* ========== 3D 效果：右侧面（伪元素 ::after） ========== */
+/* 用 ::after 伪元素模拟盒子的右侧面，产生 3D 立体视觉效果 */
+.box::after {
+  content: '';                        /* 必须设置 content 才能显示伪元素 */
+  background-color: #f6e58d;          /* 浅黄色，比底面稍亮，模拟光照差异 */
+  position: absolute;                 /* 绝对定位 */
+  top: 8px;                           /* 距顶部偏移 8px（配合 skew 变换对齐） */
+  right: -15px;                       /* 紧贴盒子右边缘外侧 */
+  height: 100%;                       /* 高度与盒子相同 */
+  width: 15px;                        /* 宽度 15px（侧面厚度） */
+  transform: skewY(45deg);            /* Y 轴倾斜 45 度，形成透视效果 */
+}
+
+/* ========== 3D 效果：底面（伪元素 ::before） ========== */
+/* 用 ::before 伪元素模拟盒子的底面，与右侧面配合形成完整 3D 效果 */
+.box::before {
+  content: '';                        /* 必须设置 content 才能显示伪元素 */
+  background-color: #f9ca24;          /* 深黄色，模拟底部阴影面 */
+  position: absolute;                 /* 绝对定位 */
+  bottom: -15px;                      /* 紧贴盒子底边缘外侧 */
+  left: 8px;                          /* 距左侧偏移 8px（配合 skew 变换对齐） */
+  height: 15px;                       /* 高度 15px（底面厚度） */
+  width: 100%;                        /* 宽度与盒子相同 */
+  transform: skewX(45deg);            /* X 轴倾斜 45 度，与右侧面形成透视一致性 */
+}
