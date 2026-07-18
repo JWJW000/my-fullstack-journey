@@ -1,0 +1,193 @@
+/* 引入 Google 字体库中的 Roboto 字体 */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* 通配符重置：使用 border-box 盒模型，保证元素的 padding 和 border 不会额外撑大设定的 width/height */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  height: 100vh;    /* 视口高度 100%，占满整个屏幕高度 */
+  overflow: hidden; /* 隐藏溢出内容，防止弹出动画或定位导致出现滚动条 */
+}
+
+h4 {
+  font-size: 20px;
+  margin: 5px;
+  text-transform: uppercase; /* 将英文字母强制转换为全大写 */
+}
+
+/* ==========================================================================
+   1. 主容器居中与显示/隐藏控制动画
+   ========================================================================== */
+
+/* 倒计时主容器：固定定位并完美水平垂直居中 */
+.counter {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* 往左上平移自身宽高的 50%，配合 top/left 50% 实现绝对居中 */
+  text-align: center;
+}
+
+/* 隐藏倒计时容器时的样式：使用 scale(0) 缩小到消失 */
+.counter.hide {
+  transform: translate(-50%, -50%) scale(0);
+  animation: hide 0.2s ease-out; /* 触发渐隐/缩小的关键帧动画 */
+}
+
+/* 缩小隐藏动画帧 */
+@keyframes hide {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+}
+
+/* 倒计时结束展示容器 (GO 和 Replay 按钮)：初始状态在屏幕中心缩放为 0 隐藏 */
+.final {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  text-align: center;
+}
+
+/* 倒计时结束时显示该容器：添加 .show 类触发弹性放大动画 */
+.final.show {
+  transform: translate(-50%, -50%) scale(1);
+  animation: show 0.2s ease-out;
+}
+
+/* 放大显示关键帧动画 (含有回弹/Overshoot效果：从 0 -> 夸张放大到 1.4 -> 回弹到正常 1) */
+@keyframes show {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+
+  30% {
+    transform: translate(-50%, -50%) scale(1.4); /* 30% 时超额放大到 1.4 倍，形成打压回弹的逼真动效 */
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* ==========================================================================
+   2. 倒计时数字 (3, 2, 1, 0) 的旋转摆动动画
+   ========================================================================== */
+
+/* 数字显示区域盒子 */
+.nums {
+  color: #3498db;
+  font-size: 50px;
+  position: relative;
+  overflow: hidden; /* 超出此固定宽高区域的数字（如旋转倾斜出界的部分）将被剪裁隐藏 */
+  width: 250px;
+  height: 50px;
+}
+
+/* 每个数字的通用基础样式 */
+.nums span {
+  position: absolute; /* 绝对定位，使 3, 2, 1, 0 叠加在同一个位置 */
+  top: 50%;
+  left: 50%;
+  /* 初始未激活状态：位于中央但顺时针旋转 120 度（倾斜藏在视线下方之外） */
+  transform: translate(-50%, -50%) rotate(120deg);
+  transform-origin: bottom center; /* 关键点：将旋转中心轴设置在数字底部中央，产生类似钟摆摆动的轨迹 */
+}
+
+/* 当数字节点添加 .in 类名时（入场动画） */
+.nums span.in {
+  transform: translate(-50%, -50%) rotate(0deg); /* 动画终点恢复正立状态 */
+  animation: goIn 0.5s ease-in-out;
+}
+
+/* 当数字节点添加 .out 类名时（退场动画） */
+.nums span.out {
+  animation: goOut 0.5s ease-in-out;
+}
+
+/* 入场动画 keyframes (从顺时针 120deg 摆动到正立 0deg，带有弹性晃动效果) */
+@keyframes goIn {
+  0% {
+    transform: translate(-50%, -50%) rotate(120deg);
+  }
+
+  30% {
+    transform: translate(-50%, -50%) rotate(-20deg); /* 摆动过头：往左偏 -20deg */
+  }
+
+  60% {
+    transform: translate(-50%, -50%) rotate(10deg);  /* 往回反弹：往右偏 10deg */
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(0deg);   /* 最终稳定在正立 0deg */
+  }
+}
+
+/* 退场动画 keyframes (从正立 0deg 逆时针旋转到 -120deg 转出剪裁区域) */
+@keyframes goOut {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  60% {
+    transform: translate(-50%, -50%) rotate(20deg);  /* 预备动效：退场前先微微往右蓄力偏 20deg */
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(-120deg);/* 向左甩出：旋转 -120deg */
+  }
+}
+
+/* ==========================================================================
+   3. 重新播放按钮 (Replay Button) 的 CSS 伪元素悬停滑入效果
+   ========================================================================== */
+
+#replay {
+  background-color: #3498db;
+  border-radius: 3px;
+  border: none;
+  color: aliceblue;
+  padding: 5px;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+#replay span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.3s;
+}
+
+/* 利用 ::after 伪元素在文字后面附加 Unicode '»' 双右箭头字符 (\00bb) */
+#replay span:after {
+  content: '\00bb';   /* Unicode编码的双右箭头 » */
+  position: absolute;
+  opacity: 0;         /* 默认隐藏透明 */
+  top: 0;
+  right: -20px;       /* 默认定位在按钮文字右侧外 20px 处 */
+  transition: 0.5s;   /* 设置 0.5 秒平滑过渡效果 */
+}
+
+/* 当鼠标悬停在按钮上时，增大文本右侧內边距，为箭头的滑入腾出空间 */
+#replay:hover span {
+  padding-right: 25px;
+}
+
+/* 当鼠标悬停时，伪元素箭头不透明度变为 1，并向左平滑滑入到 right: 0 的位置 */
+#replay:hover span:after {
+  opacity: 1;
+  right: 0;
+}
