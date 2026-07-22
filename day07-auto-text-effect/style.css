@@ -1,0 +1,57 @@
+/* 引入谷歌的 Roboto 字体，设置常规(400)和加粗(700)两种字重 */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+* {
+  /* 使用 border-box 盒模型，使元素的 width 和 height 包含 content、padding 和 border */
+  box-sizing: border-box;
+}
+
+body {
+  /* 设置浅橙色/鲑鱼红背景色 */
+  background-color: darksalmon;
+  /* 应用引入的 Roboto 字体，如果加载失败则降级使用无衬线字体 */
+  font-family: 'Roboto', sans-serif;
+  /* 开启 Flexbox 弹性盒布局 */
+  display: flex;
+  /* 元素垂直排列 */
+  flex-direction: column;
+  /* 交叉轴（水平方向）居中对齐 */
+  align-items: center;
+  /* 主轴（垂直方向）居中对齐 */
+  justify-content: center;
+  /* 占据 100% 视口高度，确保页面垂直居中居中有效 */
+  height: 100vh;
+  /* 隐藏溢出内容，防止滚动条出现 */
+  overflow: hidden;
+  /* 移除浏览器默认的 body 外边距 */
+  margin: 0;
+}
+
+div {
+  /* 绝对定位，将速度控制器固定在页面底部 */
+  position: absolute;
+  bottom: 20px;
+  /* 使用半透明的黑色背景，增加背景融合度 */
+  background: rgba(0, 0, 0, 0.1);
+  /* 上下 10px，左右 20px 的内边距 */
+  padding: 10px 20px;
+  font-size: 18px;
+}
+
+input {
+  /* 设置固定宽度 */
+  width: 50px;
+  padding: 5px;
+  font-size: 18px;
+  /* 继承 body 的背景色，使其与父级 div 完美融合 */
+  background-color: darksalmon;
+  /* 去除输入框的默认边框 */
+  border: none;
+  /* 数字在输入框中水平居中显示 */
+  text-align: center;
+}
+
+input:focus {
+  /* 去除输入框获得焦点时的默认蓝色外轮廓线 */
+  outline: none;
+}
